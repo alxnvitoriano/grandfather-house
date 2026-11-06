@@ -31,7 +31,7 @@ export const Navbar = () => {
                                     : 'opacity-80'
                                 } `}>
                                     {link}
-                                    {(hoveredLink === link || activeLink) && (
+                                    {(hoveredLink === link || activeLink === link) && (
                                         <span className='absolute -bottom-2 left-0 right-0 h-0.5 bg-white rounded-full animate-fade-in'>
 
                                         </span>
