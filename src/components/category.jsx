@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import {useState} from 'react'
 import {images} from '../assets/images'
 
 const Category = () => {    
@@ -13,19 +13,19 @@ const Category = () => {
     ];
     const products = {
         arvore: [
-            {id: '1', name: 'Arvore de Natal 150cm', price:'R$ 399,00', image:images.ARVORE},
+            {id: '1', name: 'Arvore de Natal 150cm', price:'R$ 349,90', image:images.ARVORE},
         ],
         bolinha: [
-            {id: '2', name: 'Bolinhas natalinas: 50pcs vermelho e dourado', price:'R$ 109,99', image:images.BOLINHAS},
+            {id: '2', name: 'Bolinhas natalinas vermelho e dourado 50pcs', price:'R$ 99,90', image:images.BOLINHAS},
         ],
         casa: [
-            {id: '3', name: 'Pingente casa com bonceo de neve decorativo', price:'R$ 89,00', image:images.CASA},
+            {id: '3', name: 'Decoração casa com bonceo de neve decorativo', price:'R$ 89,00', image:images.CASA},
         ],
         telefone: [
-            {id: '4', name: 'Luminária de Natal em Forma de Cabine Telefônica com Papai Noel', price:'R$ 99,00', image:images.TELEFONE},
+            {id: '4', name: 'Luminária de Natal em Forma de Cabine Telefônica', price:'R$ 99,00', image:images.TELEFONE},
         ],
         cortina: [
-            {id: '5', name: 'LED de Natal em Corda 10M', price:'R$ 99,00', image:images.CORTINA},
+            {id: '5', name: 'LED de Natal em Corda 10M', price:'R$ 114,90', image:images.CORTINA},
         ],
     }
   return (
@@ -58,7 +58,40 @@ const Category = () => {
                 ))}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                
+                {products[activeTab]?.map((product, idx) => (
+                    <div 
+                    key = {product.id}
+                    className='group bg-white rounded-2xl overflow-hidden
+                    shadow-md hover:shadow-2xl transition-all  duration-500 cursor-pointer'
+                    data-aos='zoom-in'
+                    data-aos-delay={idx * 100}>
+                    <div className="group relative h-64 overflow-hidden">
+                        <img src={product.image} alt={product.name} 
+                        className="w-full h-full object-contain hover:scale-105 
+                        transition-transform duration-300 cursor-pointer" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="opacity-0 group-hover:opacity-100
+                        transition-opacity duration-300">
+                            <button className='absolute bottom-4 left-1/2 transform 
+                                               -translate-x-1/2 bg-white text-gray-900
+                                               px-4 py-2  rounded-full text-sm font-semibold
+                                               transition-all
+                                               duration-300 hover:scale-105 hover:cursor-pointer'>
+                                                Quick View
+                            </button>
+                            </div>
+                            
+                        </div>
+                        <div className="p-4">
+                                <h3 className="font-semibold text-gray-900 mb-1">
+                                    {product.name}
+                                </h3>
+                                <p className="text-gray-600 font-medium">
+                                    {product.price}
+                                </p>
+                            </div>
+                    </div>
+                    ))}
             </div>
         </div>
 
