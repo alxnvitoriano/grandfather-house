@@ -58,8 +58,22 @@ export const Navbar = () => {
                 </div>
             </div>
             {isMenuOpen && (
-                <div >
-
+                <div className='md:hidden mt-4 pt-4 border-t border-white/20'>
+                    <div className='flex flex-col gap-3 text-white'>
+                        {navLinks.map((link) => (
+                            <a href='#' key={link} 
+                            onClick={() => {
+                                setActiveLink(link); 
+                                setIsMenuOpen(false);
+                        }} className={`py-2 relative transition-opacity hover:opacity-70 ${
+                            activeLink === link 
+                            ? 'opacity-100' 
+                            : 'opacity-80'
+                        } `}>
+                            {link}
+                            </a>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
