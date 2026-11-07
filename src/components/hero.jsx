@@ -7,6 +7,7 @@ import piscaPisca2 from '../assets/piscaPisca2.svg'
 import piscaPisca3 from '../assets/piscaPisca3.svg'
 import piscaPisca4 from '../assets/piscaPisca4.svg'
 import papaiNoel from '../assets/papai-noel-tchau.svg'
+import neveCaindo from '../assets/neve-caindo.svg'
 
 
 const Hero = () => {
@@ -62,6 +63,11 @@ const Hero = () => {
             data-aos-delay='300'>
               <img src={currentSlide.image} alt={currentSlide.alt} className="w-full h-full object-contain hover:scale-105 transition-transform duration-300 cursor-pointer"/>
             </div>
+            <img
+              src={neveCaindo}
+              alt="Neve caindo"
+              className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover z-20"
+            />
           </div>
         </div>
 

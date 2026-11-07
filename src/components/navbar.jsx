@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Menu, Search, ShoppingBag, X } from 'lucide-react';
+import papaiNoelVoando from '../assets/papai-noel-treno-voando.svg'
 
 export const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +10,12 @@ export const Navbar = () => {
     const navLinks = ['Home', 'Shop', 'Collections', 'Sale', 'Deals'];
   return (
     <div className='relative z-50' data-aos='fade-down'>
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 py-6">
+        <img
+            src={papaiNoelVoando}
+            alt="Papai Noel voando de trenó"
+            className="pointer-events-none select-none absolute top-0 left-0 w-full h-auto z-0"
+        />
+        <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-16 py-6">
             <div className="flex items-center justify-between">
                 <div className="text-white text-3xl font-bold tracking-tight">
                     Casa

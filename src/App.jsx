@@ -2,6 +2,7 @@ import Hero from './components/hero';
 import Category from './components/category';
 import Order from './components/order';
 import Products from './components/products';
+import Collection from './components/collection';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -22,6 +23,7 @@ useEffect(() => {
       <Category />
       <Order />
       <Products />
+      <Collection />
     </div>
   )
 }
