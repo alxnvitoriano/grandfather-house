@@ -102,7 +102,7 @@ const Products = () => {
                                 <h3 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
                                     {product.name}
                                 </h3>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 font-bold text-gray-900">
                                     {product.price}
                                     <del className="text-gray-400 text-sm">
                                         {product.oldPrice}

@@ -71,7 +71,7 @@ const Category = () => {
                                                px-4 py-2  rounded-full text-sm font-semibold
                                                transition-all
                                                duration-300 hover:scale-105 hover:cursor-pointer'>
-                                                Quick View
+                                                Ver mais
                             </button>
                             </div>
                             
