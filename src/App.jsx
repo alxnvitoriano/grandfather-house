@@ -1,5 +1,6 @@
 import Hero from './components/hero';
 import Category from './components/category';
+import Order from './components/order';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
@@ -17,6 +18,7 @@ useEffect(() => {
     <div className='overflow-hidden'>
       <Hero />
       <Category />
+      <Order />
     </div>
   )
 }
