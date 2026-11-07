@@ -1,6 +1,8 @@
 import Hero from './components/hero';
 import Category from './components/category';
 import Order from './components/order';
+import Products from './components/products';
+
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
@@ -19,6 +21,7 @@ useEffect(() => {
       <Hero />
       <Category />
       <Order />
+      <Products />
     </div>
   )
 }
