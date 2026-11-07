@@ -5,27 +5,21 @@ const Category = () => {
     const [activeTab, setActiveTab] = useState('natal');
 
     const tabs = [
-        {id: 'arvore', name: 'Arvore', image: images.ARVORE},
-        {id: 'bolinha', name: 'Bolinhas', image: images.BOLINHAS},
-        {id: 'casa', name: 'Casa', image: images.CASA},
-        {id: 'telefone', name: 'Telefone', image: images.TELEFONE},
-        {id: 'cortina', name: 'Cortina', image: images.CORTINA},
+        {id: 'arvore', name: 'Árvores'},
+        {id: 'decoracao', name: 'Decoração'},
     ];
     const products = {
         arvore: [
             {id: '1', name: 'Arvore de Natal 150cm', price:'R$ 349,90', image:images.ARVORE},
+            {id: '2', name: 'Arvore de Natal 60cm', price:'R$ 149,90', image:images.ARVORE4},
+            {id: '3', name: 'Arvore de Natal 90cm', price:'R$ 289,90', image:images.ARVORE5},
         ],
-        bolinha: [
+        decoracao: [
             {id: '2', name: 'Bolinhas natalinas vermelho e dourado 50pcs', price:'R$ 99,90', image:images.BOLINHAS},
-        ],
-        casa: [
-            {id: '3', name: 'Decoração casa com bonceo de neve decorativo', price:'R$ 89,00', image:images.CASA},
-        ],
-        telefone: [
+            {id: '3', name: 'Decoração casa com boneco de neve decorativo', price:'R$ 89,00', image:images.CASA},
             {id: '4', name: 'Luminária de Natal em Forma de Cabine Telefônica', price:'R$ 99,00', image:images.TELEFONE},
-        ],
-        cortina: [
             {id: '5', name: 'LED de Natal em Corda 10M', price:'R$ 114,90', image:images.CORTINA},
+
         ],
     }
   return (
@@ -35,7 +29,7 @@ const Category = () => {
             <div className="text-center mb-12"
             data-aos='fade-down'>
                 <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-3'>
-                    Shop by Category
+                    Compre por Categoria
                 </h2>
                 <p className="text-gray-600 mx-w-2xl mx-auto">
                     lorem ipsum dolor sit amet ...

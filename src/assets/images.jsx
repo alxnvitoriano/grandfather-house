@@ -3,9 +3,13 @@ import CORTINA from '../assets/pics/CORTINA DE LED.avif'
 import BOLINHAS from '../assets/pics/BOLINHAS.avif'
 import CASA from '../assets/pics/CASA DECORATIVA.avif'
 import TELEFONE from '../assets/pics/TELEFONE DECORATIVO.avif'
+import ARVORE4 from '../assets/pics/ARVORE4.png'
+import ARVORE5 from '../assets/pics/ARVORE5.png'
 
 export const images = {
     ARVORE,
+    ARVORE4,
+    ARVORE5,
     BOLINHAS,
     CORTINA,
     CASA,
