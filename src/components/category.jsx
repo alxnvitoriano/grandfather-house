@@ -7,6 +7,7 @@ const Category = () => {
     const tabs = [
         {id: 'arvore', name: 'Árvores'},
         {id: 'decoracao', name: 'Decoração'},
+        {id: 'piscaPisca', name: 'Pisca Pisca'},
     ];
     const products = {
         arvore: [
@@ -18,9 +19,11 @@ const Category = () => {
             {id: '4', name: 'Bolinhas natalinas vermelho e dourado 50pcs', price:'R$ 99,90', image:images.BOLINHAS},
             {id: '5', name: 'Decoração casa com boneco de neve decorativo', price:'R$ 89,00', image:images.CASA},
             {id: '6', name: 'Luminária de Natal em Forma de Cabine Telefônica', price:'R$ 99,00', image:images.TELEFONE},
-            {id: '7', name: 'LED de Natal em Corda 10M', price:'R$ 114,90', image:images.CORTINA},
-
         ],
+        piscaPisca: [
+            {id: '7', name: 'LED de Natal em Corda 10M', price:'R$ 114,90', image:images.CORTINA},
+            {id: '8', name: 'Pisca Pisca Estrela', price:'R$ 109,90', image:images.ESTRELA},
+        ]
     }
   return (
     <section className='py-20 bg-gray-50'
