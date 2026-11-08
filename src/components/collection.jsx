@@ -81,6 +81,11 @@ const Collection = () => {
                         <BigCategoryCard key={cat.id} cat={cat} aosDelay={idx * 200} />
                     ))}
                 </div>
+                                <div className="flex flex-col gap-6">
+                    {categories.slice(0, 2).map((cat, idx) => (
+                        <CategoryCard key={cat.id} cat={cat} aosDelay={idx * 200} />
+                    ))}
+                </div>
             </div>
         </div>
     </section>
