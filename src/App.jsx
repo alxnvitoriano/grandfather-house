@@ -3,6 +3,7 @@ import Category from './components/category';
 import Order from './components/order';
 import Products from './components/products';
 import Collection from './components/collection';
+import Deals from './components/deals';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -24,6 +25,7 @@ useEffect(() => {
       <Order />
       <Products />
       <Collection />
+      <Deals />
     </div>
   )
 }
