@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { categories } from '../data/products'
 
 const Instagram = ({ size = 20 }) => (
@@ -59,9 +60,9 @@ const Footer = () => {
                         <ul className="flex flex-col gap-3">
                             {categories.map((category) => (
                                 <li key={category.id}>
-                                    <a href="#" className="hover:text-white transition-colors">
+                                    <Link to={`/categoria/${category.id}`} className="hover:text-white transition-colors">
                                         {category.name}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -104,9 +105,11 @@ const Footer = () => {
                     <p>
                         &copy; {currentYear} Casa do Velinho. Todos os direitos reservados.
                     </p>
-                    <div className="flex items-center gap-6">
-                        <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
-                        <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+                    <div className="flex flex-wrap items-center justify-center gap-6">
+                        <Link to="/sobre" className="hover:text-white transition-colors">Sobre</Link>
+                        <Link to="/termos" className="hover:text-white transition-colors">Termos de Uso</Link>
+                        <Link to="/privacidade" className="hover:text-white transition-colors">Privacidade</Link>
+                        <Link to="/trocas-e-devolucoes" className="hover:text-white transition-colors">Trocas e Devoluções</Link>
                     </div>
                 </div>
             </div>

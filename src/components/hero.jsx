@@ -1,7 +1,6 @@
 //import React from 'react'
 
 import { useEffect, useState } from "react";
-import Navbar from "./navbar";
 import piscaPisca1 from '../assets/piscaPisca1.svg'
 import piscaPisca2 from '../assets/piscaPisca2.svg'
 import piscaPisca3 from '../assets/piscaPisca3.svg'
@@ -46,8 +45,7 @@ const Hero = () => {
   const currentSlide = slides[currentIndex];
 
   return (
-    <div className={`relative group min-h-screen transition-colors duration-1000 overflow-hidden ${currentSlide.bgColor}`}>
-        <Navbar />
+    <div className={`relative group min-h-[90vh] transition-colors duration-1000 overflow-hidden ${currentSlide.bgColor}`}>
         <div className="w-full h-[calc(90vh-80px)] flex items-center justify-center">
           <div className="relative group w-full h-full flex justify-center items-center">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none" 
