@@ -1,4 +1,5 @@
 import { Clock, Dot, Gift, Tag, Truck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Order = () => {
     const offers = [
@@ -31,31 +32,13 @@ const Order = () => {
                         <span className="text-xs text-gray-400 mx-2">
                             <Dot className="w-10 h-10"/>
                         </span>
-                        <a href="#" className="text-gray-900 text-sm font-semibold">
+                        <Link to="/shop" className="text-gray-900 text-sm font-semibold">
                             Compre Agora
-                        </a>
+                        </Link>
                     </div>
                 ))}
             </div>
         </div>
-                <style jsx>{`
-                @keyframes scroll {
-                    0% {
-                        transform: translateX(0);
-                    }
-                    100% {
-                        transform: translateX(-100%);
-                    }
-                }
-                    .animate-scroll {
-                        animation: scroll 25s linear infinite;
-                    }
-                    .animate-scroll:hover {
-                        animation-play-state: paused;
-                    }
-                `}
-
-                </style>
     </div>
   )
 }

@@ -1,5 +1,7 @@
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { formatPrice, parsePrice, useCart } from '../context/CartContext';
+import { ErrorBanner, ErrorState, LoadingSkeleton } from './RequestStates';
 
 const CartDrawer = () => {
     const {
@@ -11,7 +13,12 @@ const CartDrawer = () => {
         clearCart,
         totalItems,
         totalPrice,
+        status,
+        error,
+        reload,
+        dismissError,
     } = useCart();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -44,7 +51,15 @@ const CartDrawer = () => {
                     </button>
                 </div>
 
-                {items.length === 0 ? (
+                {error && items.length > 0 && (
+                    <ErrorBanner message={error} onDismiss={dismissError} />
+                )}
+
+                {status === 'loading' ? (
+                    <LoadingSkeleton />
+                ) : status === 'error' && items.length === 0 ? (
+                    <ErrorState message={error} onRetry={reload} />
+                ) : items.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 text-center">
                         <ShoppingBag className="w-12 h-12 text-gray-300" />
                         <p className="text-gray-500">Seu carrinho está vazio.</p>
@@ -130,7 +145,12 @@ const CartDrawer = () => {
                             <span>Total</span>
                             <span>{formatPrice(totalPrice)}</span>
                         </div>
-                        <button className="bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all">
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                navigate('/checkout');
+                            }}
+                            className="bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all">
                             Finalizar compra
                         </button>
                     </div>
