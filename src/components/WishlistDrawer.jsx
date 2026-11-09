@@ -1,9 +1,20 @@
 import { Heart, ShoppingCart, Trash2, X } from 'lucide-react';
 import { formatPrice, parsePrice, useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { ErrorBanner, ErrorState, LoadingSkeleton } from './RequestStates';
 
 const WishlistDrawer = () => {
-    const { items, isOpen, setIsOpen, removeItem, clearWishlist } = useWishlist();
+    const {
+        items,
+        isOpen,
+        setIsOpen,
+        removeItem,
+        clearWishlist,
+        status,
+        error,
+        reload,
+        dismissError,
+    } = useWishlist();
     const { items: cartItems, addItem } = useCart();
 
     const wishlist = items.filter(
@@ -41,7 +52,15 @@ const WishlistDrawer = () => {
                     </button>
                 </div>
 
-                {wishlist.length === 0 ? (
+                {error && items.length > 0 && (
+                    <ErrorBanner message={error} onDismiss={dismissError} />
+                )}
+
+                {status === 'loading' ? (
+                    <LoadingSkeleton />
+                ) : status === 'error' && items.length === 0 ? (
+                    <ErrorState message={error} onRetry={reload} />
+                ) : wishlist.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 text-center">
                         <Heart className="w-12 h-12 text-gray-300" />
                         <p className="text-gray-500">

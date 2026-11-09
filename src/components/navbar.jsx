@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom';
 import { Heart, Menu, Search, ShoppingBag, X } from 'lucide-react';
 import papaiNoelVoando from '../assets/papai-noel-treno-voando.svg'
 import { useCart } from '../context/CartContext';
@@ -6,7 +7,6 @@ import { useWishlist } from '../context/WishlistContext';
 
 export const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [activeLink, setActiveLink] = useState('Home');
     const [hoveredLink, setHoveredLink] = useState(null);
     const { items: cartItems, totalItems, setIsOpen } = useCart();
     const { items: wishlistItems, setIsOpen: setIsWishlistOpen } = useWishlist();
@@ -14,9 +14,15 @@ export const Navbar = () => {
         (item) => !cartItems.some((cartItem) => cartItem.id === item.id)
     ).length;
 
-    const navLinks = ['Home', 'Shop', 'Coleções', 'Promoções', 'Ofertas'];
+    const navLinks = [
+        { label: 'Home', to: '/' },
+        { label: 'Shop', to: '/shop' },
+        { label: 'Coleções', to: '/shop' },
+        { label: 'Promoções', to: '/promocoes' },
+        { label: 'Ofertas', to: '/ofertas' },
+    ];
   return (
-    <div className='relative z-50' data-aos='fade-down'>
+    <div className='relative z-50 bg-gray-900' data-aos='fade-down'>
         <img
             src={papaiNoelVoando}
             alt="Papai Noel voando de trenó"
@@ -24,32 +30,32 @@ export const Navbar = () => {
         />
         <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-16 py-6">
             <div className="flex items-center justify-between">
-                <div className="text-white text-3xl font-bold tracking-tight">
+                <Link to='/' className="text-white text-3xl font-bold tracking-tight">
                     Casa
                     <span className='text-xs md:flex items-center justify-center flex-1'>
                     do Velinho
                     </span>
-                </div>
+                </Link>
                 <div className='hidden md:flex items-center justify-center flex-1 '>
                     <div className='flex gap-8 lg:gap-12 text-white'>
                         {navLinks.map((link) => (
-                            <a href='#' key={link}
-                            onClick={() => setActiveLink(link)}
-                            onMouseEnter={() => setHoveredLink(link)}
+                            <NavLink to={link.to} key={link.label}
+                            onMouseEnter={() => setHoveredLink(link.label)}
                             onMouseLeave={() => setHoveredLink(null)}
-                            className={`relative font-medium transicion-opacity hover:opacity-70
-                                ${
-                                    activeLink === link 
-                                    ? 'opacity-100'
-                                    : 'opacity-80'
-                                } `}>
-                                    {link}
-                                    {(hoveredLink === link || activeLink === link) && (
-                                        <span className='absolute -bottom-2 left-0 right-0 h-0.5 bg-white rounded-full animate-fade-in'>
+                            className={({ isActive }) => `relative font-medium transition-opacity hover:opacity-70 ${
+                                isActive ? 'opacity-100' : 'opacity-80'
+                            } `}>
+                                {({ isActive }) => (
+                                    <>
+                                        {link.label}
+                                        {(hoveredLink === link.label || isActive) && (
+                                            <span className='absolute -bottom-2 left-0 right-0 h-0.5 bg-white rounded-full animate-fade-in'>
 
-                                        </span>
-                                    )}
-                                </a>
+                                            </span>
+                                        )}
+                                    </>
+                                )}
+                            </NavLink>
                         ))}
                     </div>
                 </div>
@@ -83,17 +89,13 @@ export const Navbar = () => {
                 <div className='md:hidden mt-4 pt-4 border-t border-white/20'>
                     <div className='flex flex-col gap-3 text-white'>
                         {navLinks.map((link) => (
-                            <a href='#' key={link} 
-                            onClick={() => {
-                                setActiveLink(link); 
-                                setIsMenuOpen(false);
-                        }} className={`py-2 relative transition-opacity hover:opacity-70 ${
-                            activeLink === link 
-                            ? 'opacity-100' 
-                            : 'opacity-80'
-                        } `}>
-                            {link}
-                            </a>
+                            <NavLink to={link.to} key={link.label}
+                            onClick={() => setIsMenuOpen(false)}
+                            className={({ isActive }) => `py-2 relative transition-opacity hover:opacity-70 ${
+                                isActive ? 'opacity-100' : 'opacity-80'
+                            } `}>
+                                {link.label}
+                            </NavLink>
                         ))}
                     </div>
                 </div>
