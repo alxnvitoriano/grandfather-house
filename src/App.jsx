@@ -4,6 +4,7 @@ import Order from './components/order';
 import Products from './components/products';
 import Collection from './components/collection';
 import Deals from './components/deals';
+import Cards from './components/cards';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -26,6 +27,7 @@ useEffect(() => {
       <Products />
       <Collection />
       <Deals />
+      <Cards />
     </div>
   )
 }

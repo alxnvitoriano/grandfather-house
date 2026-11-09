@@ -1,26 +1,10 @@
-import arvoreNatal from '../assets/pics/ARVORE.jpg'
-import arvoreNatal2 from '../assets/pics/ARVORE4.png'
-import arvoreNatal3 from '../assets/pics/ARVORE5.png'
+import { products } from '../data/products'
 import { Heart, RefreshCcw, ShoppingCart, Star } from 'lucide-react'
 
 
 
 const Deals = () => {
-    const featuredProducts = [
-        {
-            name: 'Arvore de Natal 150cm', price: 'R$ 349,90', oldPrice: 'R$ 399,90',
-            change: '+12,5%', image: arvoreNatal, rating: 3.9, discount: '-12,5%', 
-        },
-                {
-            name: 'Arvore de Natal 90cm', price: 'R$ 279,90', oldPrice: 'R$ 299,90',
-            change: '+7,7%', image: arvoreNatal2, rating: 4, discount: '-7,7%', 
-        },
-                {
-            name: 'Arvore de Natal 60cm', price: 'R$ 149,90', oldPrice: 'R$ 199,90',
-            change: '+15%', image: arvoreNatal3, rating: 4.5, discount: '-15%',
- 
-        }
-    ];
+    const featuredProducts = products.filter((product) => product.category === 'arvore');
     
     const timerNumbers = ['216', '7', '41', '43'];
     const timerLabels = ['Dias', 'Horas', 'Mins', 'Segs'];
@@ -38,7 +22,7 @@ const Deals = () => {
                     <div className="relative w-full sm:w-48 flex justify-center"
                     data-aos='zoom-in'
                     data-aos-delay='300'>
-                        <img src={arvoreNatal} alt='produtos' 
+                        <img src={featuredProducts[0].image} alt='produtos' 
                         className='rounded-lg w-40 h-40 sm:w-48 sm:h-48 object-contain' />
                         <span className='absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full'>
                             {featuredProducts[0].discount}
