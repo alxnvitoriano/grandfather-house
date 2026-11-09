@@ -1,13 +1,20 @@
 import { useState } from 'react'
-import { Menu, Search, ShoppingBag, X } from 'lucide-react';
+import { Heart, Menu, Search, ShoppingBag, X } from 'lucide-react';
 import papaiNoelVoando from '../assets/papai-noel-treno-voando.svg'
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 export const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeLink, setActiveLink] = useState('Home');
     const [hoveredLink, setHoveredLink] = useState(null);
+    const { items: cartItems, totalItems, setIsOpen } = useCart();
+    const { items: wishlistItems, setIsOpen: setIsWishlistOpen } = useWishlist();
+    const wishlistCount = wishlistItems.filter(
+        (item) => !cartItems.some((cartItem) => cartItem.id === item.id)
+    ).length;
 
-    const navLinks = ['Home', 'Shop', 'Collections', 'Sale', 'Deals'];
+    const navLinks = ['Home', 'Shop', 'Coleções', 'Promoções', 'Ofertas'];
   return (
     <div className='relative z-50' data-aos='fade-down'>
         <img
@@ -52,10 +59,19 @@ export const Navbar = () => {
                         <Search size={20}/>
                     </button>
                     
-                    <button className='hover:opacity-70 transition-opacity relative'>
+                    <button onClick={() => setIsWishlistOpen(true)}
+                        className='hover:opacity-70 transition-opacity relative'>
+                        <Heart size={20}/>
+                        <span className='absolute -top-2 -right-2 bg-white text-gray-900 text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold'>
+                            {wishlistCount}
+                        </span>
+                    </button>
+
+                    <button onClick={() => setIsOpen(true)}
+                        className='hover:opacity-70 transition-opacity relative'>
                         <ShoppingBag size={20}/>
                         <span className='absolute -top-2 -right-2 bg-white text-gray-900 text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold'>
-                            0
+                            {totalItems}
                         </span>
                     </button>
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className='md:hidden hover:opacity-70 transition-opacity'>

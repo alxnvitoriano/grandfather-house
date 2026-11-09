@@ -1,12 +1,46 @@
+import { useEffect, useState } from 'react'
 import { products } from '../data/products'
 import { Heart, RefreshCcw, ShoppingCart, Star } from 'lucide-react'
+import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
+import { useProductModal } from '../context/ProductModalContext'
 
 
 
 const Deals = () => {
+    const { addItem } = useCart();
+    const { toggleItem, isLiked } = useWishlist();
+    const { openProduct } = useProductModal();
     const featuredProducts = products.filter((product) => product.category === 'arvore');
-    
-    const timerNumbers = ['216', '7', '41', '43'];
+
+    const promoEndDate = new Date('2026-12-17T00:00:00').getTime();
+
+    const getTimeLeft = () => {
+        const diff = promoEndDate - Date.now();
+        if (diff <= 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+        return {
+            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((diff / (1000 * 60)) % 60),
+            seconds: Math.floor((diff / 1000) % 60),
+        };
+    };
+
+    const [timeLeft, setTimeLeft] = useState(getTimeLeft);
+
+    useEffect(() => {
+        const interval = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const timerNumbers = [
+        String(timeLeft.days),
+        String(timeLeft.hours).padStart(2, '0'),
+        String(timeLeft.minutes).padStart(2, '0'),
+        String(timeLeft.seconds).padStart(2, '0'),
+    ];
     const timerLabels = ['Dias', 'Horas', 'Mins', 'Segs'];
 
   return (
@@ -32,15 +66,20 @@ const Deals = () => {
                     <div className="flex-1 text-center sm:text-left"
                     data-aos='fade-up'
                     data-aos-delay='400'>
-                        <h3 className="text-lg md:text-xl font semibold text-gray-800">
+                        <h3 className="text-lg md:text-xl font-semibold text-gray-800">
                             {featuredProducts[0].name}
                         </h3>
                         <div className="flex text-yellow-400 text-sm my-1 justify-center sm:justify-start">
-                            {[...Array(5)].map((_, i) => (
+                            {[...Array(Math.round(featuredProducts[0].rating))].map((_, i) => (
                                 <Star key={i}
                                 className='w-4 h-4 fill-yellow-400 stroke-yellow-400' />
                             ))}
+                            {[...Array(5 - Math.round(featuredProducts[0].rating))].map((_, i) => (
+                                        <Star key={i}
+                                        className='w-4 h-4 fill-none stroke-yellow-400' />
+                                    ))}
                         </div>
+                        
                         <p className="text-xs text-gray-500 md:text-sm mb-3 leading-relaxed">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                             Autem nisi quaerat ad architecto commodi dolorum quibusdam.
@@ -54,15 +93,24 @@ const Deals = () => {
                             </span>
                         </div>
                         <div className="flex items-center gap-2 justify-center sm:justify-start flex-wrap">
-                            <button className="bg-gray-900 text-white px-4 md:px-5 py-2 rounded-lg flex items-center gap-2 text-xs md:text-sm hover:bg-gray-800 transition-all">
+                            <button onClick={() => addItem(featuredProducts[0])}
+                                className="bg-gray-900 text-white px-4 md:px-5 py-2 rounded-lg flex items-center gap-2 text-xs md:text-sm hover:bg-gray-800 transition-all">
                                 <ShoppingCart size={12}/>
                                 Adicionar ao carrinho
                             </button>
-                            <button className="p-2 border rounded-lg hover:bg-gray-100 transition-all">
-                                <Heart size={16}/>
+                            <button onClick={() => toggleItem(featuredProducts[0])}
+                                className="p-2 border rounded-lg hover:bg-gray-100 transition-all">
+                                <Heart size={16}
+                                className={isLiked(featuredProducts[0].id)
+                                ? 'fill-red-500 stroke-red-500'
+                                : 'fill-none stroke-gray-700'}/>
                             </button>
                             <button className="p-2 border rounded-lg hover:bg-gray-100 transition-all">
                                 <RefreshCcw size={16}/>
+                            </button>
+                            <button onClick={() => openProduct(featuredProducts[0])}
+                                className="p-2 border rounded-lg hover:bg-gray-100 transition-all text-xs md:text-sm">
+                                Ver mais
                             </button>
                         </div>
                     </div>
@@ -101,7 +149,7 @@ const Deals = () => {
                                 <div className="relative h-32 flex justify-center">
                                     <img src={product.image} alt={product.name} className='rounded-lg h-32 object-contain' />
                                     {product.discount && (
-                                        <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded full">
+                                        <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
                                             {product.discount} OFF
                                         </span>
                                     )}
@@ -128,10 +176,16 @@ const Deals = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-center gap-1">
-                                    <button className="text-xs border px-2 py-1
+                                    <button onClick={() => addItem(product)}
+                                        className="text-xs border px-2 py-1
                                     rounded hover:bg-gray-100 flex items-center gap-1 transition-all">
                                         <ShoppingCart size={12}/>
                                     Add ao Carrinho
+                                    </button>
+                                    <button onClick={() => openProduct(product)}
+                                        className="text-xs border px-2 py-1
+                                    rounded hover:bg-gray-100 transition-all">
+                                    Ver mais
                                     </button>
                                     <button className="p-1 border rounded hover:bg-gray-100 transition-all">
                                         <RefreshCcw size={16}/>

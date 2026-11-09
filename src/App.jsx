@@ -5,6 +5,13 @@ import Products from './components/products';
 import Collection from './components/collection';
 import Deals from './components/deals';
 import Cards from './components/cards';
+import Footer from './components/footer';
+import CartDrawer from './components/CartDrawer';
+import WishlistDrawer from './components/WishlistDrawer';
+import ProductModal from './components/ProductModal';
+import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
+import { ProductModalProvider } from './context/ProductModalContext';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -20,15 +27,25 @@ useEffect(() => {
     });
 }, []);
   return (
-    <div className='overflow-hidden'>
-      <Hero />
-      <Category />
-      <Order />
-      <Products />
-      <Collection />
-      <Deals />
-      <Cards />
-    </div>
+    <CartProvider>
+      <WishlistProvider>
+        <ProductModalProvider>
+          <div className='overflow-hidden'>
+            <Hero />
+            <Category />
+            <Order />
+            <Products />
+            <Collection />
+            <Deals />
+            <Cards />
+            <Footer />
+          </div>
+          <WishlistDrawer />
+          <CartDrawer />
+          <ProductModal />
+        </ProductModalProvider>
+      </WishlistProvider>
+    </CartProvider>
   )
 }
 export default App;

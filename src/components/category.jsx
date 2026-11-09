@@ -1,8 +1,10 @@
 import {useState} from 'react'
 import {products, categories} from '../data/products'
+import { useProductModal } from '../context/ProductModalContext'
 
 const Category = () => {    
     const [activeTab, setActiveTab] = useState('arvore');
+    const { openProduct } = useProductModal();
 
     const tabs = categories;
 
@@ -57,7 +59,8 @@ const Category = () => {
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <div className="opacity-0 group-hover:opacity-100
                         transition-opacity duration-300">
-                            <button className='absolute bottom-4 left-1/2 transform 
+                            <button onClick={() => openProduct(product)}
+                                className='absolute bottom-4 left-1/2 transform 
                                                -translate-x-1/2 bg-white text-gray-900
                                                px-4 py-2  rounded-full text-sm font-semibold
                                                transition-all
