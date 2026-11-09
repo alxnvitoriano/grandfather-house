@@ -9,15 +9,16 @@ const Deals = () => {
     const featuredProducts = [
         {
             name: 'Arvore de Natal 150cm', price: 'R$ 349,90', oldPrice: 'R$ 399,90',
-            change: '+12,5%', image: arvoreNatal, discount: '-12,5%'
+            change: '+12,5%', image: arvoreNatal, rating: 3.9, discount: '-12,5%', 
         },
                 {
             name: 'Arvore de Natal 90cm', price: 'R$ 279,90', oldPrice: 'R$ 299,90',
-            change: '+7,7%', image: arvoreNatal2, discount: '-7,7%'
+            change: '+7,7%', image: arvoreNatal2, rating: 4, discount: '-7,7%', 
         },
                 {
             name: 'Arvore de Natal 60cm', price: 'R$ 149,90', oldPrice: 'R$ 199,90',
-            change: '+15%', image: arvoreNatal3, discount: '-15%'
+            change: '+15%', image: arvoreNatal3, rating: 4.5, discount: '-15%',
+ 
         }
     ];
     
@@ -25,14 +26,13 @@ const Deals = () => {
     const timerLabels = ['Dias', 'Horas', 'Mins', 'Segs'];
 
   return (
-    <div className='grid: md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6
-    bg-gray-50'
+    <div className='grid md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-gray-50'
     data-aos='fade-up'>
         <div className="bg-white rounded-xl shadow p-4 md:p-6"
         data-aos='fade-right'
         data-aos-delay='200'>
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                Promoções do dia
+                Ofertas do dia
             </h2>
                 <div className="flex flex-col sm:flex-row items-start gap-4 md:gap-6">
                     <div className="relative w-full sm:w-48 flex justify-center"
@@ -100,13 +100,14 @@ const Deals = () => {
                             </div>
                     ))}
                 </div>
-                {/* right */}
-                <div className="bg-white rounded-xl shadow p-4 md:p-6"
-                data-aos='fade-down'
-                data-aos-delay='200'>
+            </div>
+            {/* right */}
+            <div className="bg-white rounded-xl shadow p-4 md:p-6"
+            data-aos='fade-down'
+            data-aos-delay='200'>
                     <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4"
                     data-aos='fade-down'>
-                        Promoções do dia
+                        Produtos em Destaque
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {featuredProducts.map((product, index) => (
@@ -121,15 +122,42 @@ const Deals = () => {
                                         </span>
                                     )}
                                 </div>
-                                <h3 className='text-lg md:text-xl font semibold text-gray-800'>
+                                <h3 className='text-sm md:text-xl font-medium mt-3 text-gray-800'>
                                                                    {product.name}
                                 </h3>
+                                <div className="flex justify-center text-yellow-400 text-xs my-1">
+                                    {[...Array(Math.round(product.rating))].map((_, i) => (
+                                        <Star key={i}
+                                        className='w-3 h-3 fill-yellow-400 stroke-yellow-400' />
+                                    ))}
+                                    {[...Array(5 - Math.round(product.rating))].map((_, i) => (
+                                        <Star key={i}
+                                        className='w-3 h-3 fill-none stroke-yellow-400' />
+                                    ))}
+                                </div>
+                                <div className="flex justify-center gap-2 text-sm mb-2">
+                                    <span className="text-red-500 font-black">
+                                        {product.price}
+                                    </span>
+                                    <span className="text-gray-400 line-through text-xs">
+                                        {product.oldPrice}
+                                    </span>
+                                </div>
+                                <div className="flex justify-center gap-1">
+                                    <button className="text-xs border px-2 py-1
+                                    rounded hover:bg-gray-100 flex items-center gap-1 transition-all">
+                                        <ShoppingCart size={12}/>
+                                    Add ao Carrinho
+                                    </button>
+                                    <button className="p-1 border rounded hover:bg-gray-100 transition-all">
+                                        <RefreshCcw size={16}/>
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
         </div>
-    </div>
   )
 }
 
