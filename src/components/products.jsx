@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { products } from '../data/products';
+import { useWishlist } from '../context/WishlistContext';
+import { useProductModal } from '../context/ProductModalContext';
 
 const Products = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [liked, setLiked] = useState({});
+    const { toggleItem, isLiked } = useWishlist();
+    const { openProduct } = useProductModal();
 
     const featured = products.filter((product) => product.category === 'arvore');
 
@@ -28,11 +31,6 @@ const Products = () => {
             }
             return prevIndex - 1;
         });
-    };
-
-    const toggleLike = (id, idx) => {
-        const uniqueId = `${id}-${idx}`;
-        setLiked((prev) => ({...prev, [uniqueId]: !prev[uniqueId]}));
     };
 
   return (
@@ -66,9 +64,9 @@ const Products = () => {
                             <div className="relative h-56 overflow-hidden bg-gray-100">
                                 <img src={product.image} alt={product.name}
                                 className='w-full h-full object-contain transition-transform duration-700 group-hover:scale-110' />
-                                <button onClick={() => toggleLike(product.id, startIndex + idx)}
+                                <button onClick={() => toggleItem(product)}
                                     className='absolute top-2 right-2 bg-white/80 backdrop-blur-sm p-1.5 rounded-full hover:scale-110'>
-                                        <Heart className={`w-4 h-4 ${liked[`${product.id}-${startIndex + idx}`] 
+                                        <Heart className={`w-4 h-4 ${isLiked(product.id)
                                         ? 'fill-red-500 stroke-red-500' 
                                         : 'fill-none stroke-gray-700'}`}/>
 
@@ -84,6 +82,11 @@ const Products = () => {
                                         {product.oldPrice}
                                     </del>
                                 </div>
+                                <button onClick={() => openProduct(product)}
+                                    className="mt-3 text-xs border px-2 py-1
+                                    rounded hover:bg-gray-100 transition-all">
+                                    Ver mais
+                                </button>
                             </div>
                         </div>
                     ))}
