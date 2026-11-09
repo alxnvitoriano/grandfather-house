@@ -17,6 +17,7 @@ export const products = [
         rating: 3.9,
         discount: '-12,5%',
         change: '+12,5%',
+        description: 'Árvore de Natal de 150cm com galhos densos, ideal para salas e ambientes amplos.',
     },
     {
         id: 2,
@@ -28,6 +29,7 @@ export const products = [
         rating: 4,
         discount: '-7,7%',
         change: '+7,7%',
+        description: 'Árvore de Natal compacta de 90cm, perfeita para espaços menores.',
     },
     {
         id: 3,
@@ -39,6 +41,7 @@ export const products = [
         rating: 4.5,
         discount: '-15%',
         change: '+15%',
+        description: 'Mini árvore de Natal de 60cm para mesas, aparadores e cantinhos especiais.',
     },
     {
         id: 4,
@@ -46,6 +49,7 @@ export const products = [
         price: 'R$ 99,90',
         image: images.BOLINHAS,
         category: 'decoracao',
+        description: 'Kit com 50 bolinhas natalinas nas cores vermelho e dourado para decorar a sua árvore.',
     },
     {
         id: 5,
@@ -53,6 +57,7 @@ export const products = [
         price: 'R$ 89,00',
         image: images.CASA,
         category: 'decoracao',
+        description: 'Casa decorativa com boneco de neve, um charme extra para a sua decoração natalina.',
     },
     {
         id: 6,
@@ -60,6 +65,7 @@ export const products = [
         price: 'R$ 99,00',
         image: images.TELEFONE,
         category: 'decoracao',
+        description: 'Luminária natalina em formato de cabine telefônica para dar um toque especial ao ambiente.',
     },
     {
         id: 7,
@@ -67,6 +73,7 @@ export const products = [
         price: 'R$ 114,90',
         image: images.CORTINA,
         category: 'piscaPisca',
+        description: 'Corda de LED de 10 metros para iluminar a sua decoração de Natal.',
     },
     {
         id: 8,
@@ -74,5 +81,6 @@ export const products = [
         price: 'R$ 109,90',
         image: images.ESTRELA,
         category: 'piscaPisca',
+        description: 'Pisca pisca em formato de estrela para completar a iluminação natalina.',
     },
 ]
