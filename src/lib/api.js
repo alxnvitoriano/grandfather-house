@@ -1,5 +1,22 @@
 const SESSION_STORAGE_KEY = 'casa-do-velhinho.sessionId';
 
+// Em desenvolvimento o Vite faz proxy de /api para o backend local.
+// Em produção, VITE_API_URL permite apontar para o backend publicado.
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api';
+
+const REQUEST_TIMEOUT_MS = 8000;
+
+// Erro padronizado do cliente: `status` é o código HTTP e fica 0 quando a
+// falha é de rede ou de tempo de resposta.
+export class ApiError extends Error {
+    constructor(message, { status = 0, cause } = {}) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = status;
+        if (cause) this.cause = cause;
+    }
+}
+
 // Identidade anônima do visitante. O UUID é criado uma única vez por navegador
 // e enviado em todas as requisições para que carrinho e wishlist persistam
 // sem exigir login.
@@ -12,21 +29,52 @@ export const getSessionId = () => {
     return sessionId;
 };
 
-const request = async (path, options = {}) => {
-    const response = await fetch(`/api${path}`, {
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            'x-session-id': getSessionId(),
-            ...options.headers,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error(`Falha na requisição ${options.method ?? 'GET'} ${path} (${response.status})`);
+// O backend responde erros como { error: 'mensagem' }; usa essa mensagem
+// quando disponível para não esconder a causa real do problema.
+const readErrorMessage = async (response) => {
+    try {
+        const data = await response.json();
+        if (data?.error) return data.error;
+    } catch {
+        // Corpo sem JSON: usa a mensagem genérica abaixo.
     }
+    return `Falha na requisição (${response.status}).`;
+};
 
-    return response.status === 204 ? null : response.json();
+const request = async (path, { timeout = REQUEST_TIMEOUT_MS, ...options } = {}) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}${path}`, {
+            ...options,
+            signal: controller.signal,
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': getSessionId(),
+                ...options.headers,
+            },
+        });
+
+        if (!response.ok) {
+            throw new ApiError(await readErrorMessage(response), {
+                status: response.status,
+            });
+        }
+
+        return response.status === 204 ? null : response.json();
+    } catch (error) {
+        if (error instanceof ApiError) throw error;
+        if (error.name === 'AbortError') {
+            throw new ApiError('O servidor demorou demais para responder.', { cause: error });
+        }
+        if (error instanceof SyntaxError) {
+            throw new ApiError('Resposta inválida do servidor.', { cause: error });
+        }
+        throw new ApiError('Não foi possível conectar ao servidor.', { cause: error });
+    } finally {
+        clearTimeout(timeoutId);
+    }
 };
 
 export const cartApi = {
