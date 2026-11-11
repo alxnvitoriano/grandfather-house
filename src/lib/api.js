@@ -105,3 +105,21 @@ export const wishlistApi = {
         request(`/wishlist/${encodeURIComponent(productId)}`, { method: 'DELETE' }),
     clear: () => request('/wishlist', { method: 'DELETE' }),
 };
+
+export const checkoutApi = {
+    // Cria o pedido no servidor e devolve a URL de checkout do gateway.
+    create: (customer, couponCode) =>
+        request('/checkout', {
+            method: 'POST',
+            body: JSON.stringify({ customer, couponCode }),
+            timeout: 15000,
+        }),
+    getOrder: (orderId) => request(`/orders/${encodeURIComponent(orderId)}`),
+};
+
+export const aliexpressApi = {
+    authUrl: () => request('/aliexpress/auth-url'),
+    products: ({ page = 1, pageSize = 20 } = {}) =>
+        request(`/aliexpress/products?page=${page}&pageSize=${pageSize}`),
+    product: (productId) => request(`/aliexpress/products/${encodeURIComponent(productId)}`),
+};
