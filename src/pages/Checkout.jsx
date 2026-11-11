@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AlertCircle, Check, ShoppingBag, Tag, Trash2, X } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { AlertCircle, Check, Loader2, ShoppingBag, Tag, Trash2, X } from 'lucide-react';
 import { formatPrice, parsePrice, useCart } from '../context/CartContext';
+import { checkoutApi } from '../lib/api';
 import Seo from '../components/Seo';
 import {
     calculateShipping,
@@ -115,14 +116,18 @@ const Field = ({ label, name, error, children, ...props }) => (
 
 const Checkout = () => {
     const { items, removeItem, totalPrice } = useCart();
+    const [searchParams] = useSearchParams();
     const [form, setForm] = useState(emptyForm);
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
     const [formError, setFormError] = useState('');
-    const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [couponInput, setCouponInput] = useState('');
     const [coupon, setCoupon] = useState(null);
     const [couponError, setCouponError] = useState('');
+
+    // O gateway devolve o comprador para cá com ?status=... após o pagamento.
+    const paymentStatus = searchParams.get('status');
 
     const handleApplyCoupon = (event) => {
         event.preventDefault();
@@ -166,8 +171,9 @@ const Checkout = () => {
         setErrors((prev) => ({ ...prev, [name]: validators[name](form[name]) }));
     };
 
-    // Estrutura apenas: a integração com o gateway de pagamento será feita no backend.
-    const handleSubmit = (event) => {
+    // Valida no cliente, cria o pedido no backend (que recalcula o total) e
+    // redireciona o comprador para o checkout do gateway.
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const nextErrors = {};
@@ -184,10 +190,32 @@ const Checkout = () => {
         }
 
         setFormError('');
-        setSubmitted(true);
+        setIsSubmitting(true);
+        try {
+            const { initPoint } = await checkoutApi.create(form, coupon?.code ?? null);
+            window.location.href = initPoint;
+        } catch (requestError) {
+            setFormError(requestError.message);
+            setIsSubmitting(false);
+        }
     };
 
-    if (items.length === 0 && !submitted) {
+    const paymentMessages = {
+        sucesso: {
+            title: 'Pagamento aprovado!',
+            text: 'Recebemos o seu pedido e o pagamento foi confirmado. Em breve enviaremos os detalhes por e-mail.',
+        },
+        pendente: {
+            title: 'Pagamento pendente',
+            text: 'O seu pedido foi registrado e o pagamento está aguardando confirmação. Avisaremos assim que for aprovado.',
+        },
+        falha: {
+            title: 'Pagamento não concluído',
+            text: 'Não foi possível concluir o pagamento. Nenhum valor foi cobrado — você pode tentar novamente.',
+        },
+    };
+
+    if (items.length === 0 && !paymentStatus) {
         return (
             <section className="py-20 bg-gray-50 min-h-screen">
                 <div className="container mx-auto px-4 md:px-8 lg:px-16 flex flex-col items-center justify-center gap-4 text-center">
@@ -203,18 +231,15 @@ const Checkout = () => {
         );
     }
 
-    if (submitted) {
+    if (paymentStatus) {
+        const info = paymentMessages[paymentStatus] ?? paymentMessages.pendente;
         return (
             <section className="py-20 bg-gray-50 min-h-screen">
                 <div className="container mx-auto px-4 md:px-8 lg:px-16 text-center" data-aos='zoom-in'>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-3">
-                        Pedido registrado!
-                    </h1>
-                    <p className="text-gray-600 mb-6">
-                        Esta é uma página estrutural. A finalização real será integrada ao gateway de pagamento.
-                    </p>
-                    <Link to="/" className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all">
-                        Voltar para a Home
+                    <h1 className="text-3xl font-bold text-gray-900 mb-3">{info.title}</h1>
+                    <p className="text-gray-600 mb-6 max-w-xl mx-auto">{info.text}</p>
+                    <Link to="/shop" className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all">
+                        Continuar comprando
                     </Link>
                 </div>
             </section>
@@ -360,8 +385,10 @@ const Checkout = () => {
 
                         <button
                             type="submit"
-                            className="mt-2 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all">
-                            Confirmar pedido
+                            disabled={isSubmitting}
+                            className="mt-2 flex items-center justify-center gap-2 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                            {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                            {isSubmitting ? 'Redirecionando...' : 'Confirmar pedido'}
                         </button>
                     </form>
 
